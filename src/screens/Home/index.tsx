@@ -1,11 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
+import { Heart } from 'phosphor-react-native'
 
 const Home = () => {
   return (
     <View style={styles.container}>
     <Text>Open up App.tsx to start working on your app!</Text>
+    <Heart color="#AE2983" weight="fill" size={32} />
     <StatusBar style="auto" />
   </View>
   )
