@@ -9,7 +9,19 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "baseUrl": ".",
+    "paths": {
+    "adapters/*": ["src/adapters/*"],
+    "components/*": ["src/components/*"],
+    "constants/*": ["src/constants/*"],
+    "interfaces/*": ["src/interfaces/*"],
+    "navigation/*": ["src/navigation/*"],
+    "screens/*": ["src/screens/*"],
+    "services/*": ["src/services/*"],
+    "state/*": ["src/state/*"],
+    "utils/*": ["src/utils/*"],
+    }
   },
   "exclude": ["node_modules"],
   "extends": "expo/tsconfig.base"
