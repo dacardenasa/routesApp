@@ -12,6 +12,7 @@ module.exports = function(api) {
             "@adapters": "./src/adapters",
             "@components": "./src/components",
             "@constants": "./src/constants",
+            "@hooks": "./src/hooks",
             "@interfaces": "./src/interfaces",
             "@navigation": "./src/navigation",
             "@screens": "./src/screens",
