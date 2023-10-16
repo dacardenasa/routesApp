@@ -1,15 +1,49 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback } from 'react'
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
-export const Permissions = () => {
-  return (
-    <View style={styles.container}>
-        <Text style={styles.title}>Screen to handle location permission in app</Text>
-        <TouchableOpacity style={styles.button} onPress={() => console.info('ask permissions')}>
-            <Text style={styles.buttonTitle}>Allow access locations permissions</Text>
-        </TouchableOpacity>
-    </View>
-  )
+import { PermissionsProps } from '@interfaces';
+import { useFocusEffect } from '@react-navigation/native';
+import { useLocationPermissions } from '@hooks';
+import { PermissionStatus } from '@interfaces';
+import { Button } from 'components';
+
+export const Permissions = ({ navigation }: PermissionsProps) => {
+    const {
+        askLocationsPermissions,
+        checkLocationsPermissions,
+        registerLocationInfo
+    } = useLocationPermissions()
+
+    const handleOnPressButton = async () => {
+        const response = await askLocationsPermissions()
+        if (response) {
+            if (response.status === 'denied' || !response.canAskAgain) {
+                Linking.openSettings();
+                return;
+            }
+            registerLocationInfo(response.status)
+            navigation.navigate('Home')
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            checkLocationsPermissions()
+                .then((status: PermissionStatus) => {
+                    if (status === "granted") {
+                        registerLocationInfo(status)
+                        navigation.navigate('Home')
+                    }
+                })
+        }, [])
+    );
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Screen to handle location permission in app</Text>
+            <Button title={'Allow access location'} onPress={handleOnPressButton} />
+        </View>
+    )
 }
 
 export default Permissions
@@ -21,19 +55,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 16
-    },
-    button: {
-        width: '100%',
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#000',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    buttonTitle: {
-        color: '#fff',
-        fontFamily: 'Poppins-Bold',
-        fontSize: 16,
     },
     title: {
         fontFamily: 'Poppins-Regular',
